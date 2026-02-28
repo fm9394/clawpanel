@@ -135,6 +135,58 @@ function renderDefaultBar(page, state) {
   `
 }
 
+// 排序模型列表
+function sortModels(models, sortBy) {
+  if (!sortBy || sortBy === 'default') return models
+
+  const sorted = [...models]
+  switch (sortBy) {
+    case 'name-asc':
+      sorted.sort((a, b) => {
+        const nameA = (a.name || a.id || '').toLowerCase()
+        const nameB = (b.name || b.id || '').toLowerCase()
+        return nameA.localeCompare(nameB)
+      })
+      break
+    case 'name-desc':
+      sorted.sort((a, b) => {
+        const nameA = (a.name || a.id || '').toLowerCase()
+        const nameB = (b.name || b.id || '').toLowerCase()
+        return nameB.localeCompare(nameA)
+      })
+      break
+    case 'latency-asc':
+      sorted.sort((a, b) => {
+        const latA = a.latency ?? Infinity
+        const latB = b.latency ?? Infinity
+        return latA - latB
+      })
+      break
+    case 'latency-desc':
+      sorted.sort((a, b) => {
+        const latA = a.latency ?? -1
+        const latB = b.latency ?? -1
+        return latB - latA
+      })
+      break
+    case 'context-asc':
+      sorted.sort((a, b) => {
+        const ctxA = a.contextWindow ?? 0
+        const ctxB = b.contextWindow ?? 0
+        return ctxA - ctxB
+      })
+      break
+    case 'context-desc':
+      sorted.sort((a, b) => {
+        const ctxA = a.contextWindow ?? 0
+        const ctxB = b.contextWindow ?? 0
+        return ctxB - ctxA
+      })
+      break
+  }
+  return sorted
+}
+
 // 渲染服务商列表（渲染完后直接绑定事件）
 function renderProviders(page, state) {
   const listEl = page.querySelector('#providers-list')
@@ -142,6 +194,7 @@ function renderProviders(page, state) {
   const keys = Object.keys(providers)
   const primary = getCurrentPrimary(state.config)
   const search = state.search || ''
+  const sortBy = state.sortBy || 'default'
 
   if (!keys.length) {
     listEl.innerHTML = `
@@ -161,7 +214,8 @@ function renderProviders(page, state) {
           return id.includes(search) || name.includes(search)
         })
       : models
-    const hiddenCount = models.length - filtered.length
+    const sorted = sortModels(filtered, sortBy)
+    const hiddenCount = models.length - sorted.length
     return `
       <div class="config-section" data-provider="${key}">
         <div class="config-section-title" style="display:flex;justify-content:space-between;align-items:center">
@@ -174,13 +228,25 @@ function renderProviders(page, state) {
           </div>
         </div>
         ${models.length >= 2 ? `
-        <div style="display:flex;gap:6px;margin-bottom:var(--space-sm)">
+        <div style="display:flex;gap:6px;margin-bottom:var(--space-sm);align-items:center">
           <button class="btn btn-sm btn-secondary" data-action="batch-test">批量测试</button>
           <button class="btn btn-sm btn-secondary" data-action="select-all">全选</button>
           <button class="btn btn-sm btn-danger" data-action="batch-delete">批量删除</button>
+          <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
+            <span style="font-size:var(--font-size-xs);color:var(--text-tertiary)">排序:</span>
+            <select class="form-input" data-action="sort-models" style="padding:4px 8px;font-size:var(--font-size-xs);width:auto">
+              <option value="default" ${sortBy === 'default' ? 'selected' : ''}>默认顺序</option>
+              <option value="name-asc" ${sortBy === 'name-asc' ? 'selected' : ''}>名称 A-Z</option>
+              <option value="name-desc" ${sortBy === 'name-desc' ? 'selected' : ''}>名称 Z-A</option>
+              <option value="latency-asc" ${sortBy === 'latency-asc' ? 'selected' : ''}>延迟 低→高</option>
+              <option value="latency-desc" ${sortBy === 'latency-desc' ? 'selected' : ''}>延迟 高→低</option>
+              <option value="context-asc" ${sortBy === 'context-asc' ? 'selected' : ''}>上下文 小→大</option>
+              <option value="context-desc" ${sortBy === 'context-desc' ? 'selected' : ''}>上下文 大→小</option>
+            </select>
+          </div>
         </div>` : ''}
         <div class="provider-models">
-          ${renderModelCards(key, filtered, primary, search)}
+          ${renderModelCards(key, sorted, primary, search)}
           ${hiddenCount > 0 ? `<div style="font-size:var(--font-size-xs);color:var(--text-tertiary);padding:4px 0">已隐藏 ${hiddenCount} 个不匹配的模型</div>` : ''}
         </div>
       </div>
@@ -305,7 +371,16 @@ function updateUndoBtn(page, state) {
 
 // 渲染完成后，直接给每个 [data-action] 按钮绑定 onclick
 function bindProviderButtons(listEl, page, state) {
-  listEl.querySelectorAll('[data-action]').forEach(btn => {
+  // 绑定排序下拉框
+  listEl.querySelectorAll('select[data-action="sort-models"]').forEach(select => {
+    select.onchange = (e) => {
+      state.sortBy = e.target.value
+      renderProviders(page, state)
+    }
+  })
+
+  // 绑定按钮
+  listEl.querySelectorAll('button[data-action], input[data-action]').forEach(btn => {
     const action = btn.dataset.action
     const section = btn.closest('[data-provider]')
     if (!section) return

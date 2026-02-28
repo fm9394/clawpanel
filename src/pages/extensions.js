@@ -102,20 +102,38 @@ function renderCftunnel(el, s) {
 }
 
 function renderRoutes(routes) {
-  if (!routes.length) return '<div style="color:var(--text-tertiary)">暂无路由</div>'
+  if (!routes.length) return '<div style="color:var(--text-tertiary);padding:var(--space-md) 0">暂无路由</div>'
   return `
-    <table class="data-table" style="margin-bottom:0">
-      <thead><tr><th>名称</th><th>域名</th><th>本地服务</th></tr></thead>
-      <tbody>
-        ${routes.map(r => `
-          <tr>
-            <td>${r.name}</td>
-            <td><a href="https://${r.domain}" target="_blank" rel="noopener">${r.domain}</a></td>
-            <td><code>${r.service}</code></td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
+    <div class="tunnel-routes">
+      ${routes.map(r => `
+        <div class="tunnel-route-card">
+          <div class="tunnel-route-header">
+            <span class="tunnel-route-name">${escapeHtml(r.name)}</span>
+            <span class="tunnel-route-badge">
+              <span class="status-dot running" style="width:6px;height:6px"></span>
+              活跃
+            </span>
+          </div>
+          <div class="tunnel-route-domain">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent)">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            <a href="https://${escapeHtml(r.domain)}" target="_blank" rel="noopener">${escapeHtml(r.domain)}</a>
+          </div>
+          <div class="tunnel-route-service">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-tertiary)">
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+              <line x1="6" y1="6" x2="6.01" y2="6"></line>
+              <line x1="6" y1="18" x2="6.01" y2="18"></line>
+            </svg>
+            <span>本地服务:</span>
+            <code>${escapeHtml(r.service)}</code>
+          </div>
+        </div>
+      `).join('')}
+    </div>
   `
 }
 
