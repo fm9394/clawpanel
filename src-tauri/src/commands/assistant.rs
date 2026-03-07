@@ -397,14 +397,8 @@ pub async fn assistant_web_search(
             break;
         }
         let raw_url = &cap[1];
-        let title = re_strip_tags
-            .replace_all(&cap[2], "")
-            .trim()
-            .to_string();
-        let snippet = re_strip_tags
-            .replace_all(&cap[3], "")
-            .trim()
-            .to_string();
+        let title = re_strip_tags.replace_all(&cap[2], "").trim().to_string();
+        let snippet = re_strip_tags.replace_all(&cap[3], "").trim().to_string();
 
         // 解码 DuckDuckGo 的重定向 URL
         let final_url = if let Some(pos) = raw_url.find("uddg=") {
