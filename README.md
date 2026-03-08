@@ -24,7 +24,7 @@
 ---
 
 <p align="center">
-  <img src="docs/ai-assistant-demo.gif" width="800" alt="ClawPanel AI 助手演示">
+  <img src="docs/feature-showcase.gif" width="800" alt="ClawPanel 功能全景">
 </p>
 
 <p align="center">
@@ -270,10 +270,6 @@ AI 等你回答后才会继续操作，实现真正的**人机协作**。
 
 ## 技术架构
 
-<p align="center">
-  <img src="docs/architecture.gif" width="800" alt="ClawPanel 生态架构">
-</p>
-
 | 层级 | 技术 | 说明 |
 |------|------|------|
 | 前端 | Vanilla JS + Vite | 零框架依赖，轻量快速 |
@@ -464,20 +460,25 @@ npm install -g @qingchencloud/openclaw-zh --registry https://registry.npmmirror.
 加入社区，交流使用心得、反馈问题、获取最新动态。
 
 <p align="center">
-  <img src="docs/qr-qq.png" width="200" alt="QQ 群二维码">
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/qr-wechat.png" width="200" alt="微信群二维码">
+  <img src="docs/qr-qq.png" width="180" alt="QQ 群二维码">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/qr-wechat.png" width="180" alt="微信群二维码">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/qr-dy.png" width="180" alt="抖音群二维码">
 </p>
 <p align="center">
   <strong>QQ 交流群</strong>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <strong>微信交流群</strong>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <strong>抖音交流群</strong>
 </p>
 
 | 渠道 | 链接 |
 |------|------|
 | QQ 群 | [点击加入](https://qt.cool/c/OpenClaw) |
 | 微信群 | [点击加入](https://qt.cool/c/OpenClawWx) |
+| 抖音群 | [点击加入](https://qt.cool/c/OpenClawDY) |
 | Discord | [加入 Discord](https://discord.gg/U9AttmsNHh) |
 | 元宝派 | [加入元宝派](https://yb.tencent.com/gp/i/LsvIw7mdR7Lb) |
 | GitHub Discussions | [参与讨论](https://github.com/qingchencloud/clawpanel/discussions) |
